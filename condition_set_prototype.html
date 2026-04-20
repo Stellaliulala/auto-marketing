@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>新增條件組合 — Prototype</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f5f5f3;padding:32px}
+
+.page{max-width:900px;margin:0 auto}
+.page-title{font-size:18px;font-weight:500;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #e0e0e0}
+
+.section{background:#ffffff;border:1px solid #e0e0e0;border-radius:12px;margin-bottom:8px}
+.form-row{display:flex;align-items:flex-start;padding:14px 24px;gap:16px;border-bottom:1px solid #eeeeee}
+.form-row:last-child{border-bottom:none}
+
+.label{min-width:160px;max-width:160px;font-size:13px;color:#666666;padding-top:8px;text-align:right;line-height:1.5}
+.label .req{color:#e24b4a;margin-right:2px}
+.field{flex:1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+
+/* Tab buttons */
+.tab-group{display:flex;flex-wrap:wrap;gap:6px}
+.tab{background:#ffffff;border:1px solid #cccccc;border-radius:8px;padding:5px 14px;font-size:13px;color:#1a1a1a;cursor:pointer;user-select:none}
+.tab.active{background:#1d9e75;border-color:#1d9e75;color:#ffffff}
+
+/* Yes/No toggle */
+.yn-wrap{display:inline-flex;border:1px solid #aaaaaa;border-radius:8px;overflow:hidden}
+.yn-btn{display:inline-block;padding:6px 20px;font-size:13px;cursor:pointer;background:#ffffff;color:#1a1a1a;border:none;transition:background .15s,color .15s;user-select:none}
+.yn-btn.active{background:#1d9e75;color:#ffffff}
+
+/* Fake input */
+.input-fake{background:#ffffff;border:1px solid #cccccc;border-radius:8px;padding:6px 12px;font-size:13px;color:#aaaaaa;flex:1;min-width:200px}
+
+/* Radio */
+.radio-group{display:flex;gap:16px;align-items:center}
+.radio-group label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
+input[type=radio]{accent-color:#1d9e75;cursor:pointer}
+
+/* Highlight row */
+.highlight-section{background:#f5f5f3}
+
+/* Sub section card */
+.sub-section{background:#ffffff;border:1px solid #cccccc;border-radius:12px;padding:16px 20px;margin-top:4px}
+
+/* Tag input */
+.tag-input-box{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 10px;background:#ffffff;border:1px solid #cccccc;border-radius:8px;width:100%;min-height:38px;cursor:text;transition:border-color .15s,box-shadow .15s}
+.tag-input-box:focus-within{border-color:#1d9e75;box-shadow:0 0 0 3px rgba(29,158,117,0.12)}
+.tag-input-box input{border:none;outline:none;background:transparent;font-size:13px;color:#1a1a1a;min-width:120px;flex:1;padding:2px 0}
+.tag-input-box input::placeholder{color:#aaaaaa}
+
+/* Tags */
+.tag{display:inline-flex;align-items:center;gap:4px;background:#f0f0f0;border:1px solid #e0e0e0;border-radius:4px;padding:3px 8px;font-size:12px;white-space:nowrap;color:#333333}
+.tag .rm{cursor:pointer;color:#999999;font-size:11px;margin-left:2px;line-height:1}
+.tag .rm:hover{color:#e24b4a}
+
+/* Checkbox */
+.checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:6px 0}
+input[type=checkbox]{accent-color:#1d9e75;width:14px;height:14px;cursor:pointer}
+
+/* Info boxes */
+.info-box{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;margin-top:8px}
+.info-box .title{font-weight:500;margin-bottom:2px}
+.info-box-green{background:#e1f5ee;border:1px solid #9fe1cb;color:#085041}
+.info-box-blue{background:#e6f1fb;border:1px solid #b5d4f4;color:#042c53}
+.info-box-blue .title{color:#0c447c}
+
+/* Dashed add button */
+.add-btn{background:#ffffff;border:1px dashed #cccccc;border-radius:8px;padding:8px 16px;font-size:13px;color:#888888;cursor:pointer;width:100%;text-align:center;transition:border-color .15s,color .15s}
+.add-btn:hover{border-color:#1d9e75;color:#1d9e75}
+
+/* Footer */
+.footer-bar{display:flex;gap:10px;margin-top:16px}
+.btn-cancel{background:#ffffff;border:1px solid #cccccc;border-radius:8px;padding:7px 20px;font-size:13px;cursor:pointer;color:#1a1a1a}
+.btn-cancel:hover{background:#f5f5f5}
+.btn-save{background:#1d9e75;border:none;border-radius:8px;padding:7px 20px;font-size:13px;color:#ffffff;cursor:pointer}
+.btn-save:hover{background:#178a64}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <h2 class="page-title">新增條件組合</h2>
+
+  <div class="section">
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>條件組合名稱</div>
+      <div class="field"><span class="input-fake">請輸入</span></div>
+    </div>
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>執行期間</div>
+      <div class="field" style="align-items:center;gap:8px">
+        <span style="font-size:13px">2026-04-20 00:00</span>
+        <span style="color:#aaaaaa">→</span>
+        <span style="font-size:13px">2026-05-20 23:59</span>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>是否指定會員等級</div>
+      <div class="field">
+        <div class="yn-wrap">
+          <span class="yn-btn" onclick="toggle(this.parentNode,this)">是</span>
+          <span class="yn-btn active" onclick="toggle(this.parentNode,this)">否</span>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>是否指定適用門市</div>
+      <div class="field">
+        <div class="tab-group">
+          <div class="tab active">不指定</div>
+          <div class="tab">指定門市</div>
+          <div class="tab">指定門市群組</div>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>每位會員執行次數</div>
+      <div class="field">
+        <div class="radio-group">
+          <label><input type="radio" name="exec" checked> 僅一次</label>
+          <label><input type="radio" name="exec"> 不限次數</label>
+        </div>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>多重條件邏輯</div>
+      <div class="field">
+        <div class="tab-group">
+          <div class="tab">達成</div>
+          <div class="tab active">全部</div>
+          <div class="tab">任一</div>
+          <div class="tab" style="color:#aaaaaa;cursor:default">條件後執行</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-row highlight-section">
+      <div class="label" style="padding-top:8px"><span class="req">*</span>觸發條件是否排除指定商品</div>
+      <div class="field" style="flex-direction:column;align-items:flex-start;gap:12px">
+        <div class="yn-wrap">
+          <span class="yn-btn active" id="btn-no" onclick="setExclude(false)">否</span>
+          <span class="yn-btn" id="btn-yes" onclick="setExclude(true)">是</span>
+        </div>
+
+        <div id="exclude-block" style="display:none;width:100%">
+          <div class="sub-section">
+            <div style="font-size:13px;font-weight:500;margin-bottom:10px;color:#1a1a1a">排除商品設定</div>
+            <div class="tag-input-box" id="tag-box" onclick="focusInput()">
+              <span class="tag" data-manual="1">百威啤酒 罐裝 330ml<span class="rm" onclick="removeTag(event,this)">✕</span></span>
+              <span class="tag" data-manual="1">金牌台灣啤酒 罐裝 330ml<span class="rm" onclick="removeTag(event,this)">✕</span></span>
+              <span class="tag" data-manual="1">114 七星 硬盒-20支<span class="rm" onclick="removeTag(event,this)">✕</span></span>
+              <span class="tag" data-manual="1">雪山啤酒 罐裝 500ml<span class="rm" onclick="removeTag(event,this)">✕</span></span>
+              <input type="text" id="tag-input" placeholder="輸入商品名稱後按 Enter 新增" onkeydown="handleKey(event)">
+            </div>
+            <label class="checkbox-row" style="margin-top:10px">
+              <input type="checkbox" id="import-check" onchange="toggleImport()">
+              <span>帶入會員集點卡的排除品項</span>
+            </label>
+            <div id="import-info" style="display:none">
+              <div class="info-box info-box-green">
+                <div class="title">已帶入會員集點卡排除品項</div>
+                系統已自動帶入「會員集點卡」中設定的指定排除品項，共 <strong id="import-count">0</strong> 項。帶入後仍可自行新增或移除商品。
+              </div>
+            </div>
+            <div class="info-box info-box-blue" style="margin-top:12px">
+              <div class="title">邏輯說明</div>
+              設定「排除指定商品」後，所有觸發條件與執行內容（如點數計算、票券發送）皆會先排除上列商品，再進行計算。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="section">
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>觸發條件</div>
+      <div class="field" style="flex-direction:column;align-items:flex-start;gap:10px">
+        <div class="tab-group">
+          <div class="tab">條件內容</div>
+          <div class="tab">總消費金額</div>
+          <div class="tab">單次消費金額</div>
+          <div class="tab">消費次數</div>
+          <div class="tab active">購買品項</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:13px;color:#666666">購買品項</span>
+          <span class="input-fake">請選擇</span>
+        </div>
+        <div class="tab-group">
+          <div class="tab active">購買任一品項觸發條件</div>
+          <div class="tab">購買全部品項觸發條件</div>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 24px 12px"><button class="add-btn">+ 新增條件</button></div>
+  </div>
+
+  <div style="height:12px"></div>
+
+  <div class="section">
+    <div class="form-row">
+      <div class="label"><span class="req">*</span>觸發條件後自動執行</div>
+      <div class="field" style="flex-direction:column;align-items:flex-start;gap:10px">
+        <div class="tab-group">
+          <div class="tab active">發送會員點數</div>
+          <div class="tab">發送票券</div>
+          <div class="tab">註記標籤</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-size:13px;color:#666666">發送會員點數</span>
+          <span class="input-fake" style="min-width:80px;max-width:100px;flex:unset">請輸入</span>
+          <span style="font-size:13px">點</span>
+        </div>
+      </div>
+    </div>
+    <div style="padding:0 24px 12px"><button class="add-btn">+ 新增動作</button></div>
+  </div>
+
+  <div class="footer-bar">
+    <button class="btn-cancel">取 消</button>
+    <button class="btn-save">儲 存</button>
+  </div>
+</div>
+
+<script>
+var importedTags = ["百威啤酒500ml罐","金牌台灣啤酒 罐裝 500ml","Bar 啤酒-罐-500ml","035 峰 20支"];
+
+function toggle(container, clicked){
+  Array.from(container.querySelectorAll('.yn-btn')).forEach(function(b){ b.classList.remove('active'); });
+  clicked.classList.add('active');
+}
+
+function setExclude(yes){
+  document.getElementById('btn-no').classList.toggle('active', !yes);
+  document.getElementById('btn-yes').classList.toggle('active', yes);
+  document.getElementById('exclude-block').style.display = yes ? 'block' : 'none';
+}
+
+function focusInput(){ document.getElementById('tag-input').focus(); }
+
+function handleKey(e){
+  if(e.key==='Enter'){
+    e.preventDefault();
+    var val=e.target.value.trim();
+    if(!val) return;
+    addTag(val, false);
+    e.target.value='';
+  }
+  if(e.key==='Backspace' && e.target.value===''){
+    var tags=document.querySelectorAll('#tag-box .tag');
+    if(tags.length) tags[tags.length-1].remove();
+  }
+}
+
+function addTag(text, isImported){
+  var box=document.getElementById('tag-box');
+  var input=document.getElementById('tag-input');
+  var tag=document.createElement('span');
+  tag.className='tag';
+  tag.setAttribute(isImported ? 'data-imported' : 'data-manual','1');
+  tag.innerHTML=text+'<span class="rm" onclick="removeTag(event,this)">✕</span>';
+  box.insertBefore(tag, input);
+}
+
+function removeTag(e, el){
+  e.stopPropagation();
+  el.closest('.tag').remove();
+}
+
+function toggleImport(){
+  var checked=document.getElementById('import-check').checked;
+  document.getElementById('import-info').style.display=checked ? 'block' : 'none';
+  if(checked){
+    importedTags.forEach(function(t){ addTag(t,true); });
+    document.getElementById('import-count').textContent=importedTags.length;
+  } else {
+    document.querySelectorAll('#tag-box [data-imported]').forEach(function(t){ t.remove(); });
+  }
+}
+</script>
+</body>
+</html>
