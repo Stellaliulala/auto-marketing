@@ -7,78 +7,57 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f5f5f3;padding:32px}
-
 .page{max-width:900px;margin:0 auto}
 .page-title{font-size:18px;font-weight:500;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid #e0e0e0}
-
 .section{background:#ffffff;border:1px solid #e0e0e0;border-radius:12px;margin-bottom:8px}
 .form-row{display:flex;align-items:flex-start;padding:14px 24px;gap:16px;border-bottom:1px solid #eeeeee}
 .form-row:last-child{border-bottom:none}
-
 .label{min-width:160px;max-width:160px;font-size:13px;color:#666666;padding-top:8px;text-align:right;line-height:1.5}
 .label .req{color:#e24b4a;margin-right:2px}
 .field{flex:1;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
-
-/* Tab buttons */
 .tab-group{display:flex;flex-wrap:wrap;gap:6px}
 .tab{background:#ffffff;border:1px solid #cccccc;border-radius:8px;padding:5px 14px;font-size:13px;color:#1a1a1a;cursor:pointer;user-select:none}
 .tab.active{background:#1d9e75;border-color:#1d9e75;color:#ffffff}
-
-/* Yes/No toggle */
-.yn-wrap{display:inline-flex;border:1px solid #aaaaaa;border-radius:8px;overflow:hidden}
-.yn-btn{display:inline-block;padding:6px 20px;font-size:13px;cursor:pointer;background:#ffffff;color:#1a1a1a;border:none;transition:background .15s,color .15s;user-select:none}
-.yn-btn.active{background:#1d9e75;color:#ffffff}
-
-/* Fake input */
 .input-fake{background:#ffffff;border:1px solid #cccccc;border-radius:8px;padding:6px 12px;font-size:13px;color:#aaaaaa;flex:1;min-width:200px}
-
-/* Radio */
 .radio-group{display:flex;gap:16px;align-items:center}
 .radio-group label{display:flex;align-items:center;gap:6px;font-size:13px;cursor:pointer}
 input[type=radio]{accent-color:#1d9e75;cursor:pointer}
-
-/* Highlight row */
 .highlight-section{background:#f5f5f3}
-
-/* Sub section card */
 .sub-section{background:#ffffff;border:1px solid #cccccc;border-radius:12px;padding:16px 20px;margin-top:4px}
-
-/* Tag input */
-.tag-input-box{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:6px 10px;background:#ffffff;border:1px solid #cccccc;border-radius:8px;width:100%;min-height:38px;cursor:text;transition:border-color .15s,box-shadow .15s}
-.tag-input-box:focus-within{border-color:#1d9e75;box-shadow:0 0 0 3px rgba(29,158,117,0.12)}
-.tag-input-box input{border:none;outline:none;background:transparent;font-size:13px;color:#1a1a1a;min-width:120px;flex:1;padding:2px 0}
-.tag-input-box input::placeholder{color:#aaaaaa}
-
-/* Tags */
 .tag{display:inline-flex;align-items:center;gap:4px;background:#f0f0f0;border:1px solid #e0e0e0;border-radius:4px;padding:3px 8px;font-size:12px;white-space:nowrap;color:#333333}
 .tag .rm{cursor:pointer;color:#999999;font-size:11px;margin-left:2px;line-height:1}
 .tag .rm:hover{color:#e24b4a}
-
-/* Checkbox */
+.tag-box{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:5px 8px;background:#fff;border:1px solid #cccccc;border-radius:8px;width:100%;min-height:36px}
 .checkbox-row{display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;padding:6px 0}
 input[type=checkbox]{accent-color:#1d9e75;width:14px;height:14px;cursor:pointer}
-
-/* Info boxes */
 .info-box{border-radius:8px;padding:10px 14px;font-size:12px;line-height:1.6;margin-top:8px}
 .info-box .title{font-weight:500;margin-bottom:2px}
 .info-box-green{background:#e1f5ee;border:1px solid #9fe1cb;color:#085041}
 .info-box-blue{background:#e6f1fb;border:1px solid #b5d4f4;color:#042c53}
 .info-box-blue .title{color:#0c447c}
-
-/* Dashed add button */
 .add-btn{background:#ffffff;border:1px dashed #cccccc;border-radius:8px;padding:8px 16px;font-size:13px;color:#888888;cursor:pointer;width:100%;text-align:center;transition:border-color .15s,color .15s}
 .add-btn:hover{border-color:#1d9e75;color:#1d9e75}
-
-/* Footer */
 .footer-bar{display:flex;gap:10px;margin-top:16px}
 .btn-cancel{background:#ffffff;border:1px solid #cccccc;border-radius:8px;padding:7px 20px;font-size:13px;cursor:pointer;color:#1a1a1a}
 .btn-cancel:hover{background:#f5f5f5}
 .btn-save{background:#1d9e75;border:none;border-radius:8px;padding:7px 20px;font-size:13px;color:#ffffff;cursor:pointer}
 .btn-save:hover{background:#178a64}
+.yn-wrap{display:inline-flex;border:1px solid #aaaaaa;border-radius:8px;overflow:hidden}
+.yn-btn{display:inline-block;padding:6px 20px;font-size:13px;cursor:pointer;background:#ffffff;color:#1a1a1a;border:none;transition:background .15s,color .15s;user-select:none}
+.yn-btn.active{background:#1d9e75;color:#ffffff}
+.dropdown-wrap{position:relative;width:100%;margin-top:8px}
+.dropdown-input-row{display:flex;align-items:center;background:#fff;border:1px solid #cccccc;border-radius:8px;padding:5px 10px;gap:6px;transition:border-color .15s,box-shadow .15s}
+.dropdown-input-row:focus-within{border-color:#1d9e75;box-shadow:0 0 0 3px rgba(29,158,117,0.12)}
+.dropdown-input-row input{border:none;outline:none;background:transparent;font-size:13px;color:#1a1a1a;flex:1;min-width:80px;padding:2px 0}
+.dropdown-input-row input::placeholder{color:#aaaaaa}
+.dropdown-menu{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid #cccccc;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,0.1);z-index:100}
+.dropdown-menu.open{display:block}
+.dropdown-item{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;font-size:13px;cursor:pointer;color:#1a1a1a}
+.dropdown-item:hover{background:#f0faf6}
+.dropdown-item .check{color:#1d9e75;font-size:14px}
 </style>
 </head>
 <body>
-
 <div class="page">
   <h2 class="page-title">新增條件組合</h2>
 
@@ -142,18 +121,22 @@ input[type=checkbox]{accent-color:#1d9e75;width:14px;height:14px;cursor:pointer}
           <span class="yn-btn active" id="btn-no" onclick="setExclude(false)">否</span>
           <span class="yn-btn" id="btn-yes" onclick="setExclude(true)">是</span>
         </div>
-
         <div id="exclude-block" style="display:none;width:100%">
           <div class="sub-section">
-            <div style="font-size:13px;font-weight:500;margin-bottom:10px;color:#1a1a1a">排除商品設定</div>
-            <div class="tag-input-box" id="tag-box" onclick="focusInput()">
+            <div style="font-size:13px;font-weight:500;margin-bottom:12px;color:#1a1a1a">排除商品設定</div>
+            <div class="tag-box" id="tag-box">
               <span class="tag" data-manual="1">百威啤酒 罐裝 330ml<span class="rm" onclick="removeTag(event,this)">✕</span></span>
               <span class="tag" data-manual="1">金牌台灣啤酒 罐裝 330ml<span class="rm" onclick="removeTag(event,this)">✕</span></span>
               <span class="tag" data-manual="1">114 七星 硬盒-20支<span class="rm" onclick="removeTag(event,this)">✕</span></span>
               <span class="tag" data-manual="1">雪山啤酒 罐裝 500ml<span class="rm" onclick="removeTag(event,this)">✕</span></span>
-              <input type="text" id="tag-input" placeholder="輸入商品名稱後按 Enter 新增" onkeydown="handleKey(event)">
             </div>
-            <label class="checkbox-row" style="margin-top:10px">
+            <div class="dropdown-wrap">
+              <div class="dropdown-input-row">
+                <input type="text" id="search-input" placeholder="輸入商品名稱" oninput="onInput()" autocomplete="off">
+              </div>
+              <div class="dropdown-menu" id="dropdown-menu"></div>
+            </div>
+            <label class="checkbox-row" style="margin-top:12px">
               <input type="checkbox" id="import-check" onchange="toggleImport()">
               <span>帶入會員集點卡的排除品項</span>
             </label>
@@ -240,30 +223,30 @@ function setExclude(yes){
   document.getElementById('exclude-block').style.display = yes ? 'block' : 'none';
 }
 
-function focusInput(){ document.getElementById('tag-input').focus(); }
+function onInput(){
+  var val = document.getElementById('search-input').value.trim();
+  var menu = document.getElementById('dropdown-menu');
+  if(!val){ menu.classList.remove('open'); return; }
+  menu.innerHTML = '<div class="dropdown-item" onclick="confirmAdd(\'' + val.replace(/\\/g,'\\\\').replace(/'/g,"\\'") + '\')">'
+    + '<span>' + val + '</span>'
+    + '<span class="check">✓</span>'
+    + '</div>';
+  menu.classList.add('open');
+}
 
-function handleKey(e){
-  if(e.key==='Enter'){
-    e.preventDefault();
-    var val=e.target.value.trim();
-    if(!val) return;
-    addTag(val, false);
-    e.target.value='';
-  }
-  if(e.key==='Backspace' && e.target.value===''){
-    var tags=document.querySelectorAll('#tag-box .tag');
-    if(tags.length) tags[tags.length-1].remove();
-  }
+function confirmAdd(text){
+  addTag(text, false);
+  document.getElementById('search-input').value = '';
+  document.getElementById('dropdown-menu').classList.remove('open');
 }
 
 function addTag(text, isImported){
-  var box=document.getElementById('tag-box');
-  var input=document.getElementById('tag-input');
-  var tag=document.createElement('span');
-  tag.className='tag';
-  tag.setAttribute(isImported ? 'data-imported' : 'data-manual','1');
-  tag.innerHTML=text+'<span class="rm" onclick="removeTag(event,this)">✕</span>';
-  box.insertBefore(tag, input);
+  var box = document.getElementById('tag-box');
+  var tag = document.createElement('span');
+  tag.className = 'tag';
+  tag.setAttribute(isImported ? 'data-imported' : 'data-manual', '1');
+  tag.innerHTML = text + '<span class="rm" onclick="removeTag(event,this)">✕</span>';
+  box.appendChild(tag);
 }
 
 function removeTag(e, el){
@@ -272,15 +255,21 @@ function removeTag(e, el){
 }
 
 function toggleImport(){
-  var checked=document.getElementById('import-check').checked;
-  document.getElementById('import-info').style.display=checked ? 'block' : 'none';
+  var checked = document.getElementById('import-check').checked;
+  document.getElementById('import-info').style.display = checked ? 'block' : 'none';
   if(checked){
-    importedTags.forEach(function(t){ addTag(t,true); });
-    document.getElementById('import-count').textContent=importedTags.length;
+    importedTags.forEach(function(t){ addTag(t, true); });
+    document.getElementById('import-count').textContent = importedTags.length;
   } else {
     document.querySelectorAll('#tag-box [data-imported]').forEach(function(t){ t.remove(); });
   }
 }
+
+document.addEventListener('click', function(e){
+  var menu = document.getElementById('dropdown-menu');
+  var wrap = document.querySelector('.dropdown-wrap');
+  if(menu && wrap && !wrap.contains(e.target)) menu.classList.remove('open');
+});
 </script>
 </body>
 </html>
